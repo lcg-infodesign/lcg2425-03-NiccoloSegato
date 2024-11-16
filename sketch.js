@@ -4,6 +4,11 @@ let datasetLength;
 let columnWidth;
 let highestLength;
 
+// Colors
+let primaryClr = "#023E8A";
+let secondaryClr = "#80CED7";
+let backgroundClr = "#EFF7F6";
+
 function preload() {
   data = loadTable("data/rivers-data.csv", "csv", "header");
 }
@@ -20,11 +25,11 @@ function setup() {
   datasetLength = Object.keys(riversData).length;
   columnWidth = (windowWidth - 20 - (5 * datasetLength)) / datasetLength;
 
-  highestLength = windowHeight - 300;
+  highestLength = windowHeight - 200;
 }
 
 function draw() {
-  background(220);
+  background(backgroundClr);
   noStroke();
 
   let hoveredRiverIndex = floor((mouseX - 10) / (columnWidth + 5));
@@ -39,7 +44,7 @@ function draw() {
   // River name
   textSize(50);
   textStyle(BOLD);
-  fill("#FC6900");
+  fill(primaryClr);
   text(hoveredRiver.name, 20, 80);
 
   // River length
@@ -56,7 +61,7 @@ function draw() {
   text("Countries: " + hoveredRiver.countries, 20, 150);
 
   // River temperatures
-  text("Temperature: " + hoveredRiver.min_temp + "°C - " + hoveredRiver.max_temp + "°C", 20, 170);
+  text("Temperature: " + hoveredRiver.min_temp + "°C / " + hoveredRiver.max_temp + "°C", 20, 170);
 
   for(let i = 0; i < datasetLength; i++) {
     let row = riversData[i];
@@ -72,7 +77,7 @@ function drawColumn(x, data) {
   let length = data.length;
   let mappedLength = map(length, 60, 6700, 10, highestLength);
 
-  fill("grey");
+  fill(secondaryClr);
   rect(x, windowHeight, columnWidth, -mappedLength);
   fill("black");
 }
@@ -80,7 +85,7 @@ function drawColumn(x, data) {
 function fillHoveredColumn(hoveredRiver) {
   mappedLength = map(hoveredRiver.length, 60, 6700, 10, highestLength);
   let hoveredIndex = floor((mouseX - 10) / (columnWidth + 5));
-  fill("#FC6900");
+  fill(primaryClr);
   if(hoveredIndex >= 0 && hoveredIndex < datasetLength) {
     rect(10 + (hoveredIndex * columnWidth) + 5 * hoveredIndex, windowHeight, columnWidth, -mappedLength);
   }
